@@ -1,338 +1,340 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr. Jacob Thomas - Portfolio</title>
+    <title>Dr. Jacob Thomas | Engineer, Entrepreneur, Leader</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Manjari:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     <style>
-        /* Custom styles for animations and typography */
-        html {
-            scroll-behavior: smooth;
+        /* --- Custom Properties for White Theme --- */
+        :root {
+            --bg-main: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --accent: #0d6efd; /* A professional blue */
+            --accent-hover: #0b5ed7;
+            --border-color: #dee2e6;
         }
+
+        /* --- Base Styles & Typography --- */
         body {
-            font-family: 'Manjari', sans-serif;
-            background-color: #f8fafc; /* A light gray background */
-            color: #1f2937;
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            overflow-x: hidden;
         }
 
         .font-playfair {
             font-family: 'Playfair Display', serif;
         }
 
-        /* Pre-loader styles */
-        #preloader {
+        /* --- Welcome Loader --- */
+        #welcome-loader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #ffffff;
-            z-index: 9999;
+            background-color: var(--bg-card);
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.7s ease-out, visibility 0.7s ease-out;
-            transition-delay: 0.2s;
+            z-index: 1000;
         }
-
-        #preloader.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        #greetings {
-            font-size: 2.5rem;
+        .welcome-text {
+            font-size: 3rem;
             font-weight: 700;
-            color: #111827;
-            position: relative;
-            width: 250px;
-            height: 50px;
-            text-align: center;
-        }
-
-        .greeting {
+            color: var(--text-dark);
             position: absolute;
-            width: 100%;
-            left: 0;
             opacity: 0;
-            animation: cycleGreetings 4s infinite linear;
+            animation: fadeInOut 1.5s ease-in-out forwards;
         }
-        
-        /* Staggered animation delays for greetings */
-        .greeting:nth-child(1) { animation-delay: 0s; }
-        .greeting:nth-child(2) { animation-delay: 1s; }
-        .greeting:nth-child(3) { animation-delay: 2s; }
-        .greeting:nth-child(4) { animation-delay: 3s; }
-
-        @keyframes cycleGreetings {
-            0%   { opacity: 0; transform: translateY(15px); }
-            5%   { opacity: 1; transform: translateY(0); }
-            20%  { opacity: 1; transform: translateY(0); }
-            25%  { opacity: 0; transform: translateY(-15px); }
-            100% { opacity: 0; }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: scale(0.95); }
+            33% { opacity: 1; transform: scale(1); }
+            66% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.05); }
         }
 
-        /* Scroll-triggered animation styles */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease-out, transform 0.6s ease-out;
+        /* --- Header --- */
+        #main-header.scrolled {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        .reveal.visible {
-            opacity: 1;
+        /* --- Hero Section --- */
+        .hero-bg-pattern {
+            background-image: linear-gradient(45deg, #f0f2f5 25%, transparent 25%), linear-gradient(-45deg, #f0f2f5 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f0f2f5 75%), linear-gradient(-45deg, transparent 75%, #f0f2f5 75%);
+            background-size: 20px 20px;
+            opacity: 0.5;
+        }
+        .hero-title-char {
+            display: inline-block;
+        }
+
+        /* --- Section Styling --- */
+        .section-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        /* --- Experience Timeline --- */
+        .timeline-path { background-color: var(--border-color); }
+        .timeline-dot { background-color: var(--accent); border: 4px solid var(--bg-card); }
+
+        /* --- Mobile Nav --- */
+        #mobile-nav {
+            transform: translateY(-100%);
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        #mobile-nav.open {
             transform: translateY(0);
-        }
-        
-        /* Hero section animation */
-        .hero-name {
-            animation: slide-in-bottom 1s forwards 0.8s;
-            opacity: 0;
-        }
-
-        .hero-intro {
-            animation: slide-in-bottom 1s forwards 1.1s;
-            opacity: 0;
-        }
-        
-        .hero-image-container {
-             animation: reveal-image 1.2s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s;
-             opacity: 0;
-             clip-path: circle(0% at 50% 50%);
-        }
-
-        @keyframes slide-in-bottom {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes reveal-image {
-            from {
-                clip-path: circle(0% at 50% 50%);
-                transform: scale(0.95);
-                opacity: 0;
-            }
-            to {
-                clip-path: circle(75% at 50% 50%);
-                transform: scale(1);
-                opacity: 1;
-            }
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="bg-main">
 
-    <!-- Pre-loader Screen -->
-    <div id="preloader">
-        <div id="greetings">
-            <span class="greeting">Hello</span>
-            <span class="greeting">Ciao</span>
-            <span class="greeting">Hola</span>
-            <span class="greeting">നമസ്കാരം</span>
-        </div>
+    <!-- Welcome Loader -->
+    <div id="welcome-loader">
+        <span class="welcome-text" style="animation-delay: 0s;">Hello</span>
+        <span class="welcome-text" style="animation-delay: 1.5s;">Bonjour</span>
+        <span class="welcome-text" style="animation-delay: 3s;">Hola</span>
+        <span class="welcome-text" style="animation-delay: 4.5s;">Hallo</span>
+        <span class="welcome-text" style="animation-delay: 6s;">こんにちは</span>
+        <span class="welcome-text" style="animation-delay: 7.5s;">Namaste</span>
     </div>
 
     <!-- Main Content -->
     <div id="main-content" class="opacity-0">
-        <header class="bg-white shadow-sm sticky top-0 z-50">
+        
+        <!-- Header/Navigation -->
+        <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
             <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <div class="text-2xl font-bold text-gray-800">Dr. Jacob Thomas</div>
-                <div class="hidden md:flex items-center space-x-2">
-                    <a href="#home" class="text-gray-600 hover:text-blue-600 px-3 py-2">Home</a>
-                    <a href="#about" class="text-gray-600 hover:text-blue-600 px-3 py-2">About</a>
-                    <a href="#experience" class="text-gray-600 hover:text-blue-600 px-3 py-2">Experience</a>
-                    <a href="#contact" class="text-gray-600 hover:text-blue-600 px-3 py-2">Contact</a>
-                </div>
-                <div class="md:hidden">
-                    <button id="menu-btn" class="text-gray-600 hover:text-blue-600 focus:outline-none">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                    </button>
-                </div>
+                <a href="#" class="text-2xl font-bold text-gray-800">Dr. Jacob Thomas</a>
+                <ul class="hidden md:flex space-x-8 text-gray-600">
+                    <li><a href="#about" class="hover:text-accent transition-colors">About</a></li>
+                    <li><a href="#experience" class="hover:text-accent transition-colors">Experience</a></li>
+                    <li><a href="#leadership" class="hover:text-accent transition-colors">Leadership</a></li>
+                    <li><a href="#contact" class="hover:text-accent transition-colors">Contact</a></li>
+                </ul>
+                <button id="hamburger-btn" class="md:hidden z-50 text-gray-800">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
             </nav>
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="md:hidden hidden bg-white">
-                <a href="#home" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Home</a>
-                <a href="#about" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">About</a>
-                <a href="#experience" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Experience</a>
-                <a href="#contact" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Contact</a>
-            </div>
         </header>
 
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-nav" class="fixed top-0 left-0 h-full w-full bg-white/95 backdrop-blur-lg z-40">
+            <ul class="flex flex-col items-center justify-center h-full space-y-8">
+                <li><a href="#about" class="mobile-nav-link text-3xl font-bold text-gray-800">About</a></li>
+                <li><a href="#experience" class="mobile-nav-link text-3xl font-bold text-gray-800">Experience</a></li>
+                <li><a href="#leadership" class="mobile-nav-link text-3xl font-bold text-gray-800">Leadership</a></li>
+                <li><a href="#contact" class="mobile-nav-link text-3xl font-bold text-gray-800">Contact</a></li>
+            </ul>
+        </div>
+
         <!-- Hero Section -->
-        <section id="home" class="min-h-screen flex items-center bg-gray-50">
-            <div class="container mx-auto px-6 py-16 text-center">
-                <div class="max-w-4xl mx-auto">
-                    <div class="md:flex md:items-center md:justify-center">
-                        <div class="hero-image-container w-48 h-48 rounded-full mx-auto md:mx-0 md:mr-12 shadow-2xl">
-                             <!-- IMPORTANT: Replace this placeholder URL with the actual image URL -->
-                            <img src="https://placehold.co/200x200/E2E8F0/4A5568?text=Dr.+J.T." alt="ഡോ. ജേക്കബ് തോമസ്" class="w-full h-full rounded-full object-cover">
-                        </div>
-                        <div class="mt-8 md:mt-0 text-center md:text-left">
-                            <h1 class="text-5xl md:text-7xl font-playfair font-bold text-gray-900 hero-name">Dr. Jacob Thomas</h1>
-                            <p class="mt-4 text-xl md:text-2xl text-gray-600 hero-intro">Engineer, Entrepreneur, Social Leader</p>
-                        </div>
-                    </div>
+        <section id="hero" class="min-h-screen h-screen overflow-hidden flex flex-col items-center justify-center relative">
+            <div class="hero-bg-pattern absolute inset-0 z-0"></div>
+            <div class="container mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center gap-8 text-center md:text-left">
+                <div class="md:w-3/5">
+                    <h1 id="hero-title" class="font-playfair font-black text-gray-900 tracking-tighter" style="font-size: clamp(2.5rem, 10vw, 6rem); line-height: 1;">
+                        Dr. Jacob Thomas
+                    </h1>
+                    <p id="hero-subtitle" class="text-xl md:text-2xl text-gray-600 mt-6 max-w-xl mx-auto md:mx-0">
+                        Distinguished Engineer, Visionary Entrepreneur, and Prolific Social Leader.
+                    </p>
+                </div>
+                <div class="md:w-2/5 mt-8 md:mt-0">
+                    <img id="hero-image" src="image1.png" 
+                         alt="Dr. Jacob Thomas" 
+                         class="rounded-full w-64 h-64 md:w-80 md:h-80 object-cover mx-auto shadow-2xl border-8 border-white"
+                         onerror="this.onerror=null;this.src='https://placehold.co/320x320/cccccc/ffffff?text=Dr.+J.T.';">
                 </div>
             </div>
         </section>
 
         <!-- About Section -->
-        <section id="about" class="py-20 bg-white">
+        <section id="about" class="py-20 md:py-32 bg-white">
             <div class="container mx-auto px-6">
-                <div class="max-w-4xl mx-auto text-center reveal">
-                    <h2 class="text-4xl font-playfair font-bold text-gray-900">About Me</h2>
-                    <p class="mt-6 text-lg text-gray-600 leading-relaxed">
-                        മൂന്നു പതിറ്റാണ്ടിലേറെ നീണ്ട കർമ്മപഥത്തിൽ, എഞ്ചിനീയറിംഗ്, അക്കാദമിക് രംഗം, ആതിഥ്യമര്യാദ, സാമൂഹിക-സാംസ്കാരിക പ്രവർത്തനങ്ങൾ എന്നിങ്ങനെ വിവിധ മേഖലകളിൽ വ്യക്തിമുദ്ര പതിപ്പിച്ച ഒരു ഉജ്ജ്വലനായ ഇലക്ട്രിക്കൽ എഞ്ചിനീയറും, ദീർഘവീക്ഷണമുള്ള സംരംഭകനും, പ്രഗത്ഭനായ സാമൂഹിക നേതാവുമാണ് ഡോ. ജേക്കബ് തോമസ്. ന്യൂയോർക്ക് സിറ്റി ട്രാൻസിറ്റിലെ ഔദ്യോഗിക ജീവിതത്തിൽ നിന്ന് വിരമിച്ചശേഷവും, അപ്ലൈഡ് സയൻസിൽ ഡോക്ടറേറ്റ് നേടി, വിസിറ്റിംഗ് പ്രൊഫസർ എന്ന നിലയിൽ അന്താരാഷ്ട്ര തലത്തിൽ അദ്ദേഹം ആദരിക്കപ്പെടുന്നു. സമൂഹത്തിന്റെ ഉന്നമനത്തിനും പ്രവാസി സമൂഹത്തിന്റെ ശാക്തീകരണത്തിനും വേണ്ടി അങ്ങേയറ്റം പ്രതിബദ്ധത പുലർത്തുന്ന ഈ കർമ്മയോഗിയുടെ, സാംസ്കാരിക ഐക്യത്തിനും ഇന്ത്യൻ പ്രവാസികളുടെ സ്വത്തു സംരക്ഷണത്തിനും നൽകിയ സംഭാവനകൾ കാലം എന്നും പ്രശംസനീയമായി ഓർമ്മിക്കും.
+                <div class="text-center max-w-4xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-playfair font-black mb-6">A Portrait of a Multifaceted Personality</h2>
+                    <p class="text-lg text-text-muted leading-relaxed">
+                        Dr. Jacob Thomas is a shining example of knowledge, experience, professional skill, and humanity. A distinguished Electrical Engineer, visionary entrepreneur, and accomplished social leader, he has made his mark in various fields including engineering, academia, hospitality, and socio-cultural activities for over three decades. Even after retiring from New York City Transit, he remains an internationally respected visiting professor. A dedicated professional committed to the betterment of society and the empowerment of the diaspora community, his contributions to cultural unity and the protection of Indian expatriates' property will always be remembered with admiration.
                     </p>
                 </div>
             </div>
         </section>
 
-        <!-- Experience & Leadership Section -->
-        <section id="experience" class="py-20 bg-gray-50">
+        <!-- Experience & Education Section -->
+        <section id="experience" class="py-20 md:py-32">
             <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-playfair font-bold text-gray-900 text-center mb-12 reveal">Professional Journey</h2>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Card: Engineer -->
-                    <div class="bg-white p-8 rounded-xl shadow-lg reveal transition-transform duration-300 hover:-translate-y-2">
-                        <h3 class="text-2xl font-bold text-gray-800">Engineer (Retired)</h3>
-                        <p class="text-blue-500 font-semibold mt-1">New York City Transit</p>
-                        <p class="mt-4 text-gray-600">ലോകത്തിലെ ഏറ്റവും വലിയ നഗര ഗതാഗത സംവിധാനങ്ങളിലൊന്നിൽ സുപ്രധാന ഇലക്ട്രിക്കൽ, ഇൻഫ്രാസ്ട്രക്ചർ പ്രോജക്ടുകൾക്ക് നേതൃത്വം നൽകി.</p>
+                <h2 class="text-4xl md:text-5xl font-playfair font-black text-center mb-16">Career & Education</h2>
+                <div class="grid md:grid-cols-5 gap-12">
+                    <!-- Experience Timeline -->
+                    <div class="md:col-span-3 section-card p-8 md:p-12">
+                        <h3 class="text-3xl font-bold mb-8">Professional Journey</h3>
+                        <div class="relative space-y-12">
+                            <div class="timeline-path absolute left-2 h-full"></div>
+                            <div class="timeline-item pl-8">
+                                <div class="timeline-dot"></div>
+                                <h4 class="text-xl font-bold">Engineer (Retired)</h4>
+                                <p class="font-semibold text-accent">New York City Transit</p>
+                                <p class="text-text-muted mt-2">Led significant electrical and infrastructure projects in one of the world's largest urban transit systems, contributing to the safe and efficient transportation of millions.</p>
+                            </div>
+                            <div class="timeline-item pl-8">
+                                <div class="timeline-dot"></div>
+                                <h4 class="text-xl font-bold">Owner & Operator</h4>
+                                <p class="font-semibold text-accent">Kollam Beach Retreat & Beer Parlor</p>
+                                <p class="text-text-muted mt-2">Successfully manages a premier hospitality business in Kollam, Kerala, catering to local and international tourists while supporting local employment and tourism.</p>
+                            </div>
+                        </div>
                     </div>
-                    <!-- Card: Entrepreneur -->
-                    <div class="bg-white p-8 rounded-xl shadow-lg reveal transition-transform duration-300 hover:-translate-y-2" style="transition-delay: 100ms;">
-                        <h3 class="text-2xl font-bold text-gray-800">Entrepreneur</h3>
-                        <p class="text-blue-500 font-semibold mt-1">Kollam Beach Retreat & Beer Parlor</p>
-                        <p class="mt-4 text-gray-600">കൊല്ലം, കേരളത്തിൽ വിജയകരമായി ഒരു ഹോസ്പിറ്റാലിറ്റി ബിസിനസ്സ് നടത്തുന്നു, പ്രാദേശിക ടൂറിസത്തെയും തൊഴിലവസരങ്ങളെയും പിന്തുണയ്ക്കുന്നു.</p>
-                    </div>
-                    <!-- Card: Social Leader -->
-                    <div class="bg-white p-8 rounded-xl shadow-lg reveal transition-transform duration-300 hover:-translate-y-2" style="transition-delay: 200ms;">
-                        <h3 class="text-2xl font-bold text-gray-800">Social Leader</h3>
-                        <p class="text-blue-500 font-semibold mt-1">ALA, FOMAA, etc.</p>
-                        <p class="mt-4 text-gray-600">സാംസ്കാരിക ഐക്യം പ്രോത്സാഹിപ്പിക്കുന്നതിനും വിദ്യാർത്ഥികളെ പിന്തുണയ്ക്കുന്നതിനും സാമൂഹിക വികസനത്തിനും വേണ്ടി നിരവധി സംഘടനകളിൽ നേതൃപരമായ പങ്കുവഹിക്കുന്നു.</p>
+                    <!-- Education -->
+                    <div class="md:col-span-2 section-card p-8 md:p-12">
+                        <h3 class="text-3xl font-bold mb-8">Education</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <p class="font-bold text-lg">Ph.D. in Applied Science</p>
+                                <p class="text-text-muted">Kennedy Western University, 2010</p>
+                            </div>
+                            <div>
+                                <p class="font-bold text-lg">M.S. in Applied Science</p>
+                                <p class="text-text-muted">Kennedy Western University, 2006</p>
+                            </div>
+                            <div>
+                                <p class="font-bold text-lg">B.S. in Electrical Engineering</p>
+                                <p class="text-text-muted">Stanford University, 1995</p>
+                            </div>
+                             <div>
+                                <p class="font-bold text-lg">Visiting Professor</p>
+                                <p class="text-text-muted">St. John's Medical School, New York</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
         
-        <!-- Education Section -->
-        <section id="education" class="py-20 bg-white">
+        <!-- Leadership Section -->
+        <section id="leadership" class="py-20 md:py-32 bg-white">
             <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-playfair font-bold text-gray-900 text-center mb-12 reveal">Education</h2>
-                <div class="max-w-3xl mx-auto">
-                    <div class="reveal bg-gray-50 p-6 rounded-lg shadow-md mb-6">
-                        <p class="text-xl font-semibold text-gray-800">Ph.D. in Applied Science</p>
-                        <p class="text-gray-600">Kennedy Western University, 2010</p>
+                <h2 class="text-4xl md:text-5xl font-playfair font-black text-center mb-16">Leadership & Community Involvement</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-xl font-bold text-accent">Art Lovers of America (ALA)</h3>
+                        <p class="font-semibold mt-1">National Coordinator</p>
+                        <p class="text-text-muted mt-2">Founded chapters in NY, NJ, FL, and TX. Organized the 2016 National Convention.</p>
                     </div>
-                    <div class="reveal bg-gray-50 p-6 rounded-lg shadow-md mb-6" style="transition-delay: 100ms;">
-                        <p class="text-xl font-semibold text-gray-800">M.S. in Applied Science</p>
-                        <p class="text-gray-600">Kennedy Western University, 2006</p>
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-xl font-bold text-accent">FOMAA</h3>
+                        <p class="font-semibold mt-1">Vice Chairperson & More</p>
+                        <p class="text-text-muted mt-2">Served as Vice Chairperson of the Pravasi Property Protection Council (2017) and Kerala Convention Chairperson (2015).</p>
                     </div>
-                    <div class="reveal bg-gray-50 p-6 rounded-lg shadow-md mb-6" style="transition-delay: 200ms;">
-                        <p class="text-xl font-semibold text-gray-800">B.S. in Electrical Engineering</p>
-                        <p class="text-gray-600">Stanford University, 1995</p>
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                        <h3 class="text-xl font-bold text-accent">Kerala Samajam</h3>
+                        <p class="font-semibold mt-1">President (2016)</p>
+                        <p class="text-text-muted mt-2">Currently serves as the Building Committee Chairperson, driving community infrastructure projects.</p>
                     </div>
-                     <div class="reveal bg-gray-50 p-6 rounded-lg shadow-md" style="transition-delay: 300ms;">
-                        <p class="text-xl font-semibold text-gray-800">Visiting Professor</p>
-                        <p class="text-gray-600">St. John's Medical School, New York</p>
-                    </div>
+                </div>
+                 <div class="text-center mt-12">
+                    <h3 class="text-2xl font-bold">Awards & Recognition</h3>
+                    <p class="text-text-muted mt-4 max-w-2xl mx-auto">Recipient of multiple prestigious awards, including the "Best Organizer Award" from CM Pinarayi Vijayan (2017), "Best Hotelier Award" from CM Oommen Chandy (2015), and Citations for Social & Cultural Service from the Nassau County CEO (2016) and NY Comptroller (2017).</p>
                 </div>
             </div>
         </section>
-        
-        <!-- Awards Section -->
-        <section id="awards" class="py-20 bg-gray-50">
-            <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-playfair font-bold text-gray-900 text-center mb-12 reveal">Awards & Recognition</h2>
-                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 text-center">
-                    <div class="reveal bg-white p-6 rounded-lg shadow-md">
-                        <p class="text-xl font-semibold text-blue-600">Best Organizer Award</p>
-                        <p class="text-gray-600">Presented by CM Pinarayi Vijayan (2017)</p>
-                    </div>
-                    <div class="reveal bg-white p-6 rounded-lg shadow-md" style="transition-delay: 100ms;">
-                        <p class="text-xl font-semibold text-blue-600">Best Hotelier Award</p>
-                        <p class="text-gray-600">Presented by CM Oommen Chandy (2015)</p>
-                    </div>
-                    <div class="reveal bg-white p-6 rounded-lg shadow-md md:col-span-2" style="transition-delay: 200ms;">
-                        <p class="text-xl font-semibold text-blue-600">Citation for Social & Cultural Service</p>
-                        <p class="text-gray-600">From Nassau County CEO (2016) & NY Comptroller (2017)</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
 
         <!-- Contact Section -->
-        <footer id="contact" class="bg-gray-800 text-white py-16">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl font-playfair font-bold reveal">Contact</h2>
-                <div class="mt-8 reveal">
-                    <p class="text-lg text-gray-300">Email: <a href="mailto:kochupanda@aol.com" class="hover:text-blue-400 underline">kochupanda@aol.com</a></p>
-                    <div class="mt-6 text-gray-400">
-                        <p class="font-semibold">US Address:</p>
-                        <p>82-15 Commonwealth Blvd, Bellerose, NY 11426</p>
+        <section id="contact" class="py-20 md:py-32">
+            <div class="container mx-auto px-6"><div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl md:text-5xl font-playfair font-black mb-4">Get In Touch</h2>
+                <p class="text-lg text-text-muted mb-8">To collaborate or connect with Dr. Jacob Thomas, please use the contact details below.</p>
+                <div class="flex flex-col md:flex-row justify-center gap-8 md:gap-16 text-left">
+                    <div>
+                        <h3 class="font-bold text-xl mb-2">USA Address</h3>
+                        <p class="text-text-muted">82-15 Commonwealth Blvd,<br>Bellerose, NY 11426</p>
                     </div>
-                    <div class="mt-4 text-gray-400">
-                        <p class="font-semibold">Indian Address:</p>
-                        <p>Kochupandarazhicom, Mayyanad Post, Kollam District, Kerala</p>
+                     <div>
+                        <h3 class="font-bold text-xl mb-2">India Address</h3>
+                        <p class="text-text-muted">Kochupandarazhicom, Mayyanad P.O,<br>Kollam District, Kerala</p>
+                    </div>
+                     <div>
+                        <h3 class="font-bold text-xl mb-2">Email</h3>
+                        <a href="mailto:kochupanda@aol.com" class="text-accent hover:underline">kochupanda@aol.com</a>
                     </div>
                 </div>
-            </div>
-        </footer>
+            </div></div>
+        </section>
 
+        <!-- Footer -->
+        <footer class="py-8 border-t border-gray-200">
+            <div class="container mx-auto px-6 text-center text-gray-500"><p>&copy; 2025 Dr. Jacob Thomas. All Rights Reserved.</p></div>
+        </footer>
     </div>
+    
+    <!-- GSAP Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 
     <script>
-        // Pre-loader logic
-        window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- Loader ---
+            const loader = document.getElementById('welcome-loader');
             const mainContent = document.getElementById('main-content');
-
-            // Set a timeout to hide the preloader and show the content
             setTimeout(() => {
-                preloader.classList.add('hidden');
-                mainContent.style.transition = 'opacity 0.5s ease-in-out';
-                mainContent.classList.remove('opacity-0');
-            }, 4000); // Duration of the greeting animation loop
-        });
+                gsap.to(loader, { opacity: 0, duration: 1, onComplete: () => loader.style.display = 'none' });
+                gsap.to(mainContent, { opacity: 1, duration: 1, delay: 0.5, onComplete: initAnimations });
+            }, 1000); // Shortened for faster loading
 
-        // Scroll-triggered animations
-        const revealElements = document.querySelectorAll('.reveal');
-
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+            // --- Navigation ---
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            const mobileNav = document.getElementById('mobile-nav');
+            hamburgerBtn.addEventListener('click', () => mobileNav.classList.toggle('open'));
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    mobileNav.classList.remove('open');
+                    gsap.to(window, { duration: 1.5, scrollTo: this.getAttribute('href'), ease: "power3.inOut" });
+                });
             });
-        }, {
-            threshold: 0.1 // Trigger when 10% of the element is visible
-        });
 
-        revealElements.forEach(el => {
-            revealObserver.observe(el);
-        });
-
-        // Mobile menu toggle
-        const menuBtn = document.getElementById('menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-        
-        // Close mobile menu when a link is clicked
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
+            // --- Header Scroll Effect ---
+            ScrollTrigger.create({
+                start: 'top -80',
+                end: 99999,
+                toggleClass: {className: 'scrolled', targets: '#main-header'}
             });
+
+            function initAnimations() {
+                gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+                // --- Hero Entrance ---
+                gsap.from("#hero-title", { y: 50, opacity: 0, duration: 1.2, ease: "power3.out", delay: 0.2 });
+                gsap.from("#hero-subtitle", { y: 50, opacity: 0, duration: 1.2, ease: "power3.out", delay: 0.4 });
+                gsap.from("#hero-image", { scale: 0.8, opacity: 0, duration: 1.5, ease: "power3.out", delay: 0.6 });
+
+                // --- General Section Reveals ---
+                const sections = gsap.utils.toArray('section:not(#hero)');
+                sections.forEach(section => {
+                    const elems = section.querySelectorAll('h2, p, .section-card, .timeline-item, .bg-gray-50, div > h3, div > a');
+                    gsap.from(elems, {
+                        y: 50, opacity: 0, duration: 1, ease: "power3.out", stagger: 0.15,
+                        scrollTrigger: { trigger: section, start: "top 85%" }
+                    });
+                });
+
+                // --- Timeline Path ---
+                gsap.from('.timeline-path', { scaleY: 0, transformOrigin: 'top center', duration: 1.5, ease: 'power2.inOut', scrollTrigger: { trigger: '#experience .section-card', start: 'top 70%', end: 'bottom 80%', scrub: 1 }});
+            }
         });
     </script>
 </body>
